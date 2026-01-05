@@ -15,21 +15,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
+    - uses: oven-sh/setup-bun@v2
       with:
-        version: 10
-        run_install: false
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v4
-      with:
-        cache: 'pnpm'
+        bun-version-file: ".bun-version"
 
     - name: Build
       run: |
-        pnpm i
-        pnpm run build:github
+        bun i
+        bun run build:github
 
     - name: Upload static files as artifact
       uses: actions/upload-pages-artifact@v3
