@@ -22,7 +22,7 @@ export default class Game extends EventTarget {
   private level;
   private lastTime: number = 0;
   private isOver = false;
-
+  private showModalFn?: (message: string, isWin: boolean) => void;
   private pipeline: ((...input: any[]) => any) | undefined;
   private readonly world;
 
@@ -72,7 +72,7 @@ export default class Game extends EventTarget {
       },
       {
         once: true,
-      },
+      }
     );
     this.addEventListener(
       GameReadyEvent.name,
@@ -81,7 +81,7 @@ export default class Game extends EventTarget {
       },
       {
         once: true,
-      },
+      }
     );
     this.addEventListener(GameStartEvent.name, () => {
       this.world.isStarted = true;
@@ -90,6 +90,9 @@ export default class Game extends EventTarget {
     this.onCreate(canvas);
   }
 
+  public setModalFunction(fn: (message: string, isWin: boolean) => void) {
+    this.showModalFn = fn;
+  }
   /**
    * Entry point, trigger the game loop
    */
@@ -109,12 +112,12 @@ export default class Game extends EventTarget {
     this.isOver = true;
 
     if (event.isWin()) {
-      alert(strings.GAME_OVER_MESSAGE_WIN);
+      this.showModalFn?.(strings.GAME_OVER_MESSAGE_WIN, true);
       return;
     }
 
     if (event.isLose()) {
-      alert(strings.GAME_OVER_MESSAGE_LOSE);
+      this.showModalFn?.(strings.GAME_OVER_MESSAGE_LOSE, false);
       return;
     }
   }
@@ -160,7 +163,7 @@ export default class Game extends EventTarget {
     const enemies = await generateEnemiesFromLevel(
       this.level,
       this.world,
-      canvas,
+      canvas
     ).then((v) => v);
 
     this.pipeline = pipe(
@@ -168,7 +171,7 @@ export default class Game extends EventTarget {
         new CheckSystem(canvas),
         new Movement(canvas),
         new Render(canvas, [player, ball, enemies]),
-      ].map((system) => system.update.bind(system)),
+      ].map((system) => system.update.bind(system))
     );
   }
 
