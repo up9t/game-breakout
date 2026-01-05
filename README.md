@@ -15,6 +15,24 @@ I tried to make a classic game called breakout using:
 - Fast Performance (thanks to Entity Component System)
 - Flexible and easy to add and customize level (using JSON declaration)
 
+## Run
+
+```bash
+# You could use: npm, pnpm, yarn, bun. Here I'm using bun
+bun i
+bun run dev -- --host
+```
+
+Go to http://localhost:5173
+
+## Run (with Docker)
+
+```bash
+docker run --rm -p 8080:80 ghcr.io/ilyasa1211/game-breakout:latest
+```
+
+Go to http://localhost:8080
+
 
 ## How to add levels
 
