@@ -7,10 +7,10 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 export default defineConfig((env) => ({
   plugins: [
     tailwindcss(),
-    tanstackRouter({
-      target: "react",
-      autoCodeSplitting: true,
-    }),
+    // tanstackRouter({
+    //   target: "react",
+    //   autoCodeSplitting: true,
+    // }),
     preact(),
   ],
   base: env.mode === "github" ? "/game-breakout" : "/",
