@@ -6,7 +6,6 @@ import {
 } from "preact/hooks";
 import { entry } from "../../states.ts";
 import { LevelDescriptorContext } from "../contexts/LevelContext.ts";
-import MainButton from "./button/MainButton.tsx";
 
 export default function MainMenu(props: {
   setState: Dispatch<StateUpdater<(typeof entry)[keyof typeof entry]>>;
@@ -27,65 +26,25 @@ export default function MainMenu(props: {
   };
 
   return (
-    <div>
-      {isLevelSelection ? (
-        <h1
-          className="font-extrabold mb-4"
-          style={{
-            fontSize: "3rem",
-          }}
-        >
-          Choose a level
-        </h1>
-      ) : (
-        <h1 className="font-extrabold mb-10">Welcome to Breakout!</h1>
-      )}
-
-      {!isLevelSelection && (
-        <div
-          style={{
-            width: "clamp(100px,100%,400px)",
-            margin: "0 auto",
-          }}
-        >
-          <MainButton
+    <>
+    <h1>Welcome to Breakout!</h1>
+        <div class="grid grid-cols-2 gap-3">
+      <button type="button" onClick={showLevelSelection}>
+        Play
+      </button>
+      {isLevelSelection &&
+        levelDescriptor.levels.map((level) => (
+          <button
             type="button"
-            onClick={showLevelSelection}
-            transparent
-            noBackground={false}
+            key={level.path}
+            onClick={() => handleSelectLevel(level.level)}
           >
-            Play
-          </MainButton>
+            <div>Level {level.level}</div>
+          </button>
+        ))}
         </div>
-      )}
-
-      {isLevelSelection && (
-        <div
-          className="z-10"
-          style={{
-            border: "1px solid #aaa",
-            borderRadius: 16,
-            padding: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 20,
-          }}
-        >
-          {levelDescriptor.levels.map((level) => (
-            <button
-              type="button"
-              key={level.path}
-              onClick={() => handleSelectLevel(level.level)}
-            >
-              <div>Level {level.level}</div>
-            </button>
-          ))}
-        </div>
-      )}
-
       {/* <div>Setting</div> */}
       {/* <div>Custom Level</div> */}
-    </div>
+      </>
   );
 }
